@@ -10,4 +10,5 @@ export const { GET, POST, PATCH, DELETE, OPTIONS } = createSitepingHandler({
   prisma,
   allowedOrigins: origins,
   apiKey: process.env.SITEPING_API_KEY,
+  publicEndpoints: ["GET", "POST", "OPTIONS"],
 });
