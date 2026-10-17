@@ -13,5 +13,12 @@ export default function Page() {
     return () => widget.destroy();
   }, []);
 
-  return <main>SitePing est prêt.</main>;
+  return (
+    <main>
+      <p>SitePing est prêt.</p>
+      <p>
+        <a href="/inbox">Ouvrir les notes</a>
+      </p>
+    </main>
+  );
 }

@@ -9,6 +9,7 @@
     "@prisma/client": "^6.16.2",
     "@siteping/adapter-prisma": "latest",
     "@siteping/cli": "latest",
+    "@siteping/dashboard": "^0.2.8",
     "@siteping/widget": "latest",
     "next": "^15.5.4",
     "react": "^19.1.1",
