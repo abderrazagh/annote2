@@ -5,10 +5,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ARG DATABASE_URL
-ARG SITEPING_API_KEY
 ARG SITEPING_ORIGINS
 ENV DATABASE_URL=$DATABASE_URL
-ENV SITEPING_API_KEY=$SITEPING_API_KEY
 ENV SITEPING_ORIGINS=$SITEPING_ORIGINS
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npx @siteping/cli sync --schema prisma/schema.prisma && npx prisma generate && npx next build
