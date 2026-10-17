@@ -2,12 +2,11 @@
 
 import { SitepingInbox } from "@siteping/dashboard";
 
-export function InboxApp({ apiKey }: { apiKey: string }) {
+export function InboxApp() {
   return (
     <SitepingInbox
       projects="les-prunelles"
-      endpoint="/api/siteping"
-      apiKey={apiKey}
+      endpoint="/api/inbox"
       locale="fr"
       theme="light"
       accentColor="#005aad"
