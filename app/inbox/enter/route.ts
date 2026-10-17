@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { inboxCookieName, inboxPublicOrigin, signInboxSession, verifyInboxTicket } from "../../../lib/inbox-access";
+import { inboxCookieName, inboxPublicOrigin, inboxSecret, signInboxSession, verifyInboxTicket } from "../../../lib/inbox-access";
 
 export async function GET(request: Request): Promise<NextResponse> {
-  const secret = (process.env.SITEPING_API_KEY ?? "").trim();
+  const secret = inboxSecret();
   const ticket = new URL(request.url).searchParams.get("ticket") ?? "";
   const origin = inboxPublicOrigin(
     request.url,

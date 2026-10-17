@@ -40,6 +40,14 @@ export function inboxPublicOrigin(
   return originFrom(requestUrl);
 }
 
+export function inboxSecret(): string {
+  const value = process.env["SITEPING_API_KEY"];
+  if (typeof value !== "string") {
+    return "";
+  }
+  return value.trim().replace(/^['"]+|['"]+$/g, "");
+}
+
 export function inboxCookieName(): string {
   return INBOX_COOKIE;
 }
@@ -90,19 +98,27 @@ export function verifyInboxSession(secret: string, token: string | undefined, no
 }
 
 function verify(secret: string, kind: "ticket" | "session", token: string, now: number): boolean {
-  secret = secret.trim();
+  secret = secret.trim().replace(/^['"]+|['"]+$/g, "");
+  token = token.trim().replace(/^['"]+|['"]+$/g, "");
+  if (token.includes("%")) {
+    try {
+      token = decodeURIComponent(token);
+    } catch {
+      return false;
+    }
+  }
   if (secret === "") {
     return false;
   }
   const split = token.split(".");
-  if (split.length !== 2) {
+  if (split.length !== 2 || !/^\d+$/.test(split[0])) {
     return false;
   }
   const exp = Number(split[0]);
-  if (!Number.isFinite(exp) || exp < now) {
+  if (!Number.isFinite(exp) || exp + 120000 < now) {
     return false;
   }
-  return matches(sign(secret, `${kind}.${exp}`), split[1]);
+  return matches(sign(secret, `${kind}.${split[0]}`), split[1]);
 }
 
 export function inboxCookieValue(header: string, name: string): string | undefined {

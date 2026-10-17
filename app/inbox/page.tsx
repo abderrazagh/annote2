@@ -1,13 +1,15 @@
-import { cookies } from "next/headers";
-import { inboxCookieName, verifyInboxSession } from "../../lib/inbox-access";
+import { cookies, headers } from "next/headers";
+import { inboxCookieName, inboxCookieValue, inboxSecret, verifyInboxSession } from "../../lib/inbox-access";
 import { InboxApp } from "./inbox-app";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Notes du site" };
 
 export default async function InboxPage() {
-  const secret = process.env.SITEPING_API_KEY ?? "";
+  const headerList = await headers();
   const jar = await cookies();
-  const allowed = verifyInboxSession(secret, jar.get(inboxCookieName())?.value);
+  const token = inboxCookieValue(headerList.get("cookie") ?? "", inboxCookieName()) ?? jar.get(inboxCookieName())?.value;
+  const allowed = verifyInboxSession(inboxSecret(), token);
   if (!allowed) {
     return (
       <main style={{ maxWidth: 520, margin: "12vh auto", fontFamily: "Source Sans 3, Segoe UI, sans-serif", color: "#00284d" }}>
