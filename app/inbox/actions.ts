@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { inboxCookieName, inboxToken, inboxTokenMatches } from "@/lib/inbox-access";
+import { inboxCookieName, inboxToken, inboxTokenMatches } from "../../lib/inbox-access";
 
 export async function openInbox(_previous: { error: string }, formData: FormData): Promise<{ error: string }> {
   const secret = process.env.SITEPING_API_KEY ?? "";

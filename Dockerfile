@@ -1,8 +1,8 @@
 FROM node:22-alpine
 WORKDIR /app
 RUN apk add --no-cache openssl libc6-compat
-COPY package.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
 ARG DATABASE_URL
 ARG SITEPING_API_KEY

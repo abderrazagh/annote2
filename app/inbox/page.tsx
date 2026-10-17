@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { inboxCookieName, inboxTokenMatches } from "@/lib/inbox-access";
+import { inboxCookieName, inboxTokenMatches } from "../../lib/inbox-access";
 import { InboxApp } from "./inbox-app";
 import { LoginForm } from "./login-form";
 
