@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { inboxCookieName, inboxPublicOrigin, inboxSecret, signInboxSession, verifyInboxTicket } from "../../../lib/inbox-access";
+import { inboxCookieName, inboxPublicOrigin, inboxSecret, inboxSessionMaxAge, signInboxSession, verifyInboxTicket } from "../../../lib/inbox-access";
 
 export async function GET(request: Request): Promise<NextResponse> {
   const secret = inboxSecret();
@@ -24,7 +24,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     sameSite: "lax",
     secure: proto === "https",
     path: "/",
-    maxAge: 60 * 60 * 12,
+    maxAge: inboxSessionMaxAge(),
   });
   return response;
 }

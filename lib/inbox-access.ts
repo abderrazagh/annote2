@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 const INBOX_COOKIE = "siteping_inbox";
 const TICKET_MS = 2 * 60 * 1000;
-const SESSION_MS = 12 * 60 * 60 * 1000;
+const SESSION_MS = 30 * 60 * 1000;
 
 const INTERNAL_HOSTS = new Set(["0.0.0.0", "127.0.0.1", "localhost", "::", "::1"]);
 
@@ -46,6 +46,10 @@ export function inboxSecret(): string {
     return "";
   }
   return value.trim().replace(/^['"]+|['"]+$/g, "");
+}
+
+export function inboxSessionMaxAge(): number {
+  return SESSION_MS / 1000;
 }
 
 export function inboxCookieName(): string {
