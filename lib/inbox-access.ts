@@ -4,6 +4,42 @@ const INBOX_COOKIE = "siteping_inbox";
 const TICKET_MS = 2 * 60 * 1000;
 const SESSION_MS = 12 * 60 * 60 * 1000;
 
+const INTERNAL_HOSTS = new Set(["0.0.0.0", "127.0.0.1", "localhost", "::", "::1"]);
+
+function originFrom(value: string): string {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" && url.protocol !== "http:") {
+      return "";
+    }
+    if (INTERNAL_HOSTS.has(url.hostname)) {
+      return "";
+    }
+    return url.origin;
+  } catch {
+    return "";
+  }
+}
+
+export function inboxPublicOrigin(
+  requestUrl: string,
+  forwardedHost: string | null,
+  forwardedProto: string | null,
+  configured: string,
+): string {
+  const fromConfig = originFrom(configured.trim());
+  if (fromConfig !== "") {
+    return fromConfig;
+  }
+  const host = (forwardedHost ?? "").split(",")[0]?.trim() ?? "";
+  const hostname = host.replace(/^\[|\]$/g, "").split(":")[0] ?? "";
+  if (host !== "" && !INTERNAL_HOSTS.has(hostname)) {
+    const proto = forwardedProto === "http" ? "http" : "https";
+    return `${proto}://${host}`;
+  }
+  return originFrom(requestUrl);
+}
+
 export function inboxCookieName(): string {
   return INBOX_COOKIE;
 }
