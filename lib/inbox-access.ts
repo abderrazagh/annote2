@@ -8,6 +8,17 @@ export function inboxCookieName(): string {
   return INBOX_COOKIE;
 }
 
+export function inboxToken(secret: string): string {
+  return createHmac("sha256", secret).update("siteping-inbox").digest("hex");
+}
+
+export function inboxTokenMatches(secret: string, token: string | undefined): boolean {
+  if (secret === "" || token === undefined || token.length === 0) {
+    return false;
+  }
+  return matches(inboxToken(secret), token);
+}
+
 function sign(secret: string, body: string): string {
   return createHmac("sha256", secret).update(body).digest("base64url");
 }
