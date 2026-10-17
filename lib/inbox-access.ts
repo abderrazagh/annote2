@@ -54,6 +54,7 @@ export function verifyInboxSession(secret: string, token: string | undefined, no
 }
 
 function verify(secret: string, kind: "ticket" | "session", token: string, now: number): boolean {
+  secret = secret.trim();
   if (secret === "") {
     return false;
   }
